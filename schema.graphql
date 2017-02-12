@@ -1,0 +1,32 @@
+schema {
+  query: Database
+}
+
+type _EmptyMutation {
+  __typename: String!
+}
+
+type Database {
+  userStore: UserStore!
+  me: User!
+  __typename: String!
+  __schema: __Schema!
+  __type(name: String!): __Type!
+}
+
+# Ein Turnierserver-Nutzer
+type User {
+  # Eine einzigartige Identifikationsnummer des Nutzers
+  id: String!
+  username: String!
+  email: String!
+  admin: Boolean!
+  secret: String!
+  firstname: String
+  __typename: String!
+}
+
+type UserStore {
+  users: [User!]!
+  __typename: String!
+}
