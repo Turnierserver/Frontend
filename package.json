@@ -1,0 +1,30 @@
+{
+  "name": "turnierserver",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@valentin-seehausen/react-scripts": "^1.0.0",
+    "eslint": "^3.15.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-babel": "^4.0.1",
+    "eslint-plugin-promise": "^3.4.1",
+    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-standard": "^2.0.1"
+  },
+  "dependencies": {
+    "babel-relay-plugin": "0.10.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-relay": "^0.10.0",
+    "relay": "^0.8.0-1",
+    "semantic-ui-css": "^2.2.4",
+    "semantic-ui-react": "^0.64.7"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:8000"
+}
