@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import Relay from 'react-relay'
-import { App } from './App'
+import Relay from 'react-relay'
 import 'semantic-ui-css/semantic.css'
+
+import { stateNavigator } from './routes.js'
 
 /*
 Relay.injectNetworkLayer(
@@ -10,8 +11,18 @@ Relay.injectNetworkLayer(
 )
 */
 
+stateNavigator.onNavigate((oldState, state, data) => {
+  let route = state.relayRoute(data)
+  let Component = state.component
+  ReactDOM.render(
+    <Relay.RootContainer
+      renderFetched={data =>
+        <Component {...data} stateNavigator={stateNavigator} />
+      }
+      Component={Component}
+      route={route} />,
+    document.getElementById('root')
+  )
+})
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-)
+stateNavigator.start()

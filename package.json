@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "babel-relay-plugin": "0.10.0",
+    "navigation": "^3.0.0",
+    "navigation-react": "^2.0.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-relay": "^0.10.0",

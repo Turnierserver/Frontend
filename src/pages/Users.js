@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import Relay from 'react-relay'
 import { Table } from 'semantic-ui-react'
 
+import { App } from '../App.js'
 
 // @graphql(ListEntryQuery) TODO: decorators
 class _ListEntry extends PureComponent {
@@ -32,29 +33,32 @@ export const ListEntry = Relay.createContainer(_ListEntry, {
   }
 })
 
-class _UserList extends PureComponent {
+class _UsersPage extends PureComponent {
   static propTypes = {
-    users: React.PropTypes.object
+    users: React.PropTypes.object,
+    stateNavigator: React.PropTypes.object
   }
   render () {
     return (
-      <Table singleLine sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Username</Table.HeaderCell>
-            <Table.HeaderCell>E-Mail</Table.HeaderCell>
-            <Table.HeaderCell>Admin</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {this.props.users.users.map((data, i) => <ListEntry key={i} user={data} />)}
-        </Table.Body>
-      </Table>
+      <App stateNavigator={this.props.stateNavigator} page='users'>
+        <Table singleLine sortable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Username</Table.HeaderCell>
+              <Table.HeaderCell>E-Mail</Table.HeaderCell>
+              <Table.HeaderCell>Admin</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {this.props.users.users.map((data, i) => <ListEntry key={i} user={data} />)}
+          </Table.Body>
+        </Table>
+      </App>
     )
   }
 }
 
-export const UserList = Relay.createContainer(_UserList, {
+export const UsersPage = Relay.createContainer(_UsersPage, {
   fragments: {
     users: () => Relay.QL`
       fragment on UserStore {
@@ -66,11 +70,11 @@ export const UserList = Relay.createContainer(_UserList, {
   }
 })
 
-export class UserListRoute extends Relay.Route {
-  static routeName = 'UserList'
+export class UsersPageRoute extends Relay.Route {
+  static routeName = 'UsersPage'
   static queries = {
     users: (Component) => Relay.QL`
-      query UserListQuery {
+      query UsersPageQuery {
         userStore { ${Component.getFragment('users')} }
       }
     `

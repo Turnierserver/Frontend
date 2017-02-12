@@ -1,14 +1,25 @@
 schema {
-  query: Database
+  query: Context
 }
 
-type _EmptyMutation {
+type AI {
+  id: ID!
+  name: String!
+  description: String
+  elo: Float!
+  user: User!
   __typename: String!
 }
 
-type Database {
+type AIStore {
+  ais: [AI!]!
+  __typename: String!
+}
+
+type Context {
   userStore: UserStore!
-  me: User!
+  aiStore: AIStore!
+  me: User
   __typename: String!
   __schema: __Schema!
   __type(name: String!): __Type!
@@ -17,12 +28,13 @@ type Database {
 # Ein Turnierserver-Nutzer
 type User {
   # Eine einzigartige Identifikationsnummer des Nutzers
-  id: String!
+  id: ID!
   username: String!
   email: String!
   admin: Boolean!
   secret: String!
   firstname: String
+  ais: [AI!]!
   __typename: String!
 }
 
