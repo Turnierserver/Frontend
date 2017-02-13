@@ -1,7 +1,14 @@
+import Relay from 'react-relay'
 import { StateNavigator } from 'navigation'
-import { HomePage, HomePageRoute } from './pages/Home.js'
+import { HomePage } from './pages/Home.js'
+import { TutorialPage } from './pages/Tutorial.js'
 import { UsersPageRoute, UsersPage } from './pages/Users.js'
 import { AIsPageRoute, AIsPage } from './pages/AIs.js'
+
+export class EmptyRoute extends Relay.Route {
+  static routeName = 'EmptyRoute'
+  static queries = {}
+}
 
 export const stateNavigator = new StateNavigator([
   {
@@ -9,7 +16,14 @@ export const stateNavigator = new StateNavigator([
     route: '',
     defaults: {},
     component: HomePage,
-    relayRoute: (data) => new HomePageRoute(data)
+    relayRoute: (data) => new EmptyRoute(data)
+  },
+  {
+    key: 'tutorial',
+    route: 'tutorial',
+    defaults: {},
+    component: TutorialPage,
+    relayRoute: (data) => new EmptyRoute(data)
   },
   {
     key: 'users',

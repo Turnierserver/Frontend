@@ -1,20 +1,28 @@
 import React, { PureComponent } from 'react'
 import Relay from 'react-relay'
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
 
 import { App } from '../App.js'
 
-
-// @graphql(ListEntryQuery) TODO: decorators
 class _ListEntry extends PureComponent {
   static propTypes = {
     ai: React.PropTypes.object
   }
   render () {
-    let { id } = this.props.ai
+    let { id, elo, name, user } = this.props.ai
     return (
       <Table.Row key={id}>
         <Table.Cell>{id}</Table.Cell>
+        <Table.Cell>rank</Table.Cell>
+        <Table.Cell>{elo}</Table.Cell>
+        <Table.Cell>{name}</Table.Cell>
+        <Table.Cell>{user.username}</Table.Cell>
+        <Table.Cell>lang</Table.Cell>
+        <Table.Cell>
+          <Button>
+            Herausfordern
+          </Button>
+        </Table.Cell>
       </Table.Row>
     )
   }
@@ -25,7 +33,9 @@ export const ListEntry = Relay.createContainer(_ListEntry, {
     ai: () => Relay.QL`
       fragment on AI {
         id,
-        name
+        name,
+        elo,
+        user { username }
       }
     `
   }

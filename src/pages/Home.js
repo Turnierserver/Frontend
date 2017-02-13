@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import Relay from 'react-relay'
-import { Table } from 'semantic-ui-react'
 
 import { App } from '../App.js'
 
@@ -23,8 +22,3 @@ class _HomePage extends PureComponent {
 export const HomePage = Relay.createContainer(_HomePage, {
   fragments: {}
 })
-
-export class HomePageRoute extends Relay.Route {
-  static routeName = 'HomePage'
-  static queries = {}
-}
