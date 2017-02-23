@@ -1,24 +1,62 @@
-schema {
-  query: Context
-}
-
-type AI {
+type Ai {
   id: ID!
   name: String!
   description: String
   elo: Float!
   user: User!
+  gametype: GameType!
+  games: [AiGameConnection!]!
   __typename: String!
 }
 
-type AIStore {
-  ais: [AI!]!
+type AiGameConnection {
+  id: ID!
+  score: Int
+  rank: Int
+  game: Game!
+  ai: Ai!
   __typename: String!
 }
 
-type Context {
+type AiStore {
+  ais: [Ai!]!
+  __typename: String!
+}
+
+type Game {
+  id: ID!
+  gametype: GameType!
+  ais: [AiGameConnection!]!
+  __typename: String!
+}
+
+type GameStore {
+  games: [Game!]!
+  __typename: String!
+}
+
+type GameType {
+  id: ID!
+  name: String!
+  ais: [Ai!]!
+  __typename: String!
+}
+
+type GameTypeStore {
+  gametypes: [GameType!]!
+  __typename: String!
+}
+
+type Mutation {
+  testMutate(newVal: Int!): Boolean!
+  __typename: String!
+}
+
+type Query {
   userStore: UserStore!
-  aiStore: AIStore!
+  aiStore: AiStore!
+  gameStore: GameStore!
+  gametypeStore: GameTypeStore!
   me: User
   __typename: String!
   __schema: __Schema!
@@ -34,7 +72,7 @@ type User {
   admin: Boolean!
   secret: String!
   firstname: String
-  ais: [AI!]!
+  ais: [Ai!]!
   __typename: String!
 }
 

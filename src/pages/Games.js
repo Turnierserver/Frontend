@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import Relay from 'react-relay'
 import { Table, Button } from 'semantic-ui-react'
 
@@ -6,7 +6,12 @@ import { App } from '../App.js'
 
 class _ListEntry extends PureComponent {
   static propTypes = {
-    ai: React.PropTypes.object
+    ai: PropTypes.shape({
+      id: PropTypes.any,
+      elo: PropTypes.number,
+      name: PropTypes.string,
+      user: PropTypes.shape({ username: PropTypes.string })
+    })
   }
   render () {
     let { id, elo, name, user } = this.props.ai
@@ -30,20 +35,18 @@ class _ListEntry extends PureComponent {
 
 export const ListEntry = Relay.createContainer(_ListEntry, {
   fragments: {
-    ai: () => Relay.QL`
-      fragment on AI {
+    game: () => Relay.QL`
+      fragment on Game {
         id,
-        name,
-        elo,
-        user { username }
+        gametype { name }
       }
     `
   }
 })
 
-class _AIsPage extends PureComponent {
+class _GamesPage extends PureComponent {
   static propTypes = {
-    ais: React.PropTypes.object,
+    gameStore: React.PropTypes.object,
     stateNavigator: React.PropTypes.object
   }
   render () {
@@ -62,7 +65,8 @@ class _AIsPage extends PureComponent {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.props.ais.ais.map((data, i) => <ListEntry key={i} ai={data} />)}
+            {this.props.gameStore.games.map((data) =>
+              <ListEntry key={data.id} ai={data} />)}
           </Table.Body>
         </Table>
       </App>
@@ -70,24 +74,25 @@ class _AIsPage extends PureComponent {
   }
 }
 
-export const AIsPage = Relay.createContainer(_AIsPage, {
+export const GamesPage = Relay.createContainer(_GamesPage, {
   fragments: {
-    ais: () => Relay.QL`
-      fragment on AIStore {
-        ais {
-          ${ListEntry.getFragment('ai')}
+    gameStore: () => Relay.QL`
+      fragment on GameStore {
+        games {
+          ${ListEntry.getFragment('game')},
+          id
         }
       }
     `
   }
 })
 
-export class AIsPageRoute extends Relay.Route {
-  static routeName = 'AIsPage'
+export class GamesPageRoute extends Relay.Route {
+  static routeName = 'GamesPage'
   static queries = {
-    ais: (Component) => Relay.QL`
-      query AIsPageQuery {
-        aiStore { ${Component.getFragment('ais')} }
+    gameStore: (Component) => Relay.QL`
+      query GamesPageQuery {
+        gameStore { ${Component.getFragment('gameStore')} }
       }
     `
   }

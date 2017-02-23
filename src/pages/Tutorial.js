@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import Relay from 'react-relay'
 import ReactMarkdown from 'react-markdown'
+import { Segment } from 'semantic-ui-react'
 
 import { App } from '../App.js'
 
@@ -14,7 +15,9 @@ class _TutorialPage extends PureComponent {
   render () {
     return (
       <App stateNavigator={this.props.stateNavigator} page='tutorial'>
-        <ReactMarkdown source={tutorialData} />
+        <Segment>
+          <ReactMarkdown source={tutorialData} />
+        </Segment>
       </App>
     )
   }

@@ -3,7 +3,8 @@ import { StateNavigator } from 'navigation'
 import { HomePage } from './pages/Home.js'
 import { TutorialPage } from './pages/Tutorial.js'
 import { UsersPageRoute, UsersPage } from './pages/Users.js'
-import { AIsPageRoute, AIsPage } from './pages/AIs.js'
+import { AisPageRoute, AisPage } from './pages/Ais.js'
+import { GamesPageRoute, GamesPage } from './pages/Games.js'
 
 export class EmptyRoute extends Relay.Route {
   static routeName = 'EmptyRoute'
@@ -37,7 +38,15 @@ export const stateNavigator = new StateNavigator([
     route: 'ais',
     defaults: { id: 0 },
     trackCrumbTrail: true,
-    component: AIsPage,
-    relayRoute: (data) => new AIsPageRoute(data)
+    component: AisPage,
+    relayRoute: (data) => new AisPageRoute(data)
+  },
+  {
+    key: 'games',
+    route: 'games',
+    defaults: { id: 0 },
+    trackCrumbTrail: true,
+    component: GamesPage,
+    relayRoute: (data) => new GamesPageRoute(data)
   }
 ])
