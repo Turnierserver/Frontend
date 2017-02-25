@@ -2,9 +2,20 @@ import React, { PureComponent, PropTypes } from 'react'
 import Relay from 'react-relay'
 import { Table, Button } from 'semantic-ui-react'
 
+import { relayContainer } from '../decorators.js'
 import { App } from '../App.js'
 
-class _ListEntry extends PureComponent {
+@relayContainer({
+  fragments: {
+    game: () => Relay.QL`
+      fragment on Game {
+        id,
+        gametype { name }
+      }
+    `
+  }
+})
+export class ListEntry extends PureComponent {
   static propTypes = {
     ai: PropTypes.shape({
       id: PropTypes.any,
@@ -33,18 +44,19 @@ class _ListEntry extends PureComponent {
   }
 }
 
-export const ListEntry = Relay.createContainer(_ListEntry, {
+@relayContainer({
   fragments: {
-    game: () => Relay.QL`
-      fragment on Game {
-        id,
-        gametype { name }
+    gameStore: () => Relay.QL`
+      fragment on GameStore {
+        games {
+          ${ListEntry.getFragment('game')},
+          id
+        }
       }
     `
   }
 })
-
-class _GamesPage extends PureComponent {
+export class GamesPage extends PureComponent {
   static propTypes = {
     gameStore: React.PropTypes.object,
     stateNavigator: React.PropTypes.object
@@ -73,19 +85,6 @@ class _GamesPage extends PureComponent {
     )
   }
 }
-
-export const GamesPage = Relay.createContainer(_GamesPage, {
-  fragments: {
-    gameStore: () => Relay.QL`
-      fragment on GameStore {
-        games {
-          ${ListEntry.getFragment('game')},
-          id
-        }
-      }
-    `
-  }
-})
 
 export class GamesPageRoute extends Relay.Route {
   static routeName = 'GamesPage'
