@@ -63,7 +63,7 @@ export class GamesPage extends PureComponent {
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='ais'>
+      <App stateNavigator={this.props.stateNavigator} page='games'>
         <Table singleLine sortable>
           <Table.Header>
             <Table.Row>

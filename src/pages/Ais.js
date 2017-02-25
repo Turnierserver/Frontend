@@ -1,32 +1,43 @@
 import React, { PureComponent, PropTypes } from 'react'
 import Relay from 'react-relay'
-import { Table, Button } from 'semantic-ui-react'
+import { Table, Button, Popup, Label, Divider, Dropdown, Image } from 'semantic-ui-react'
 
 import { App } from '../App.js'
 
 class _ListEntry extends PureComponent {
   static propTypes = {
-    ai: PropTypes.shape({
-      id: PropTypes.any,
-      elo: PropTypes.number,
-      name: PropTypes.string,
-      user: PropTypes.shape({ username: PropTypes.string })
-    })
+    ai: PropTypes.object,
+    me: PropTypes.object
   }
   render () {
-    let { id, elo, name, user } = this.props.ai
+    let { id, elo, name, user, icon } = this.props.ai
+    let choices = [
+      { key: 'A', value: 'A', text: 'Meine KI', image: { avatar: true, src: '' } } // TODO
+    ]
     return (
       <Table.Row key={id}>
-        <Table.Cell>{id}</Table.Cell>
+        <Table.Cell>
+          <Image src={icon} avatar />
+        </Table.Cell>
         <Table.Cell>rank</Table.Cell>
         <Table.Cell>{elo}</Table.Cell>
         <Table.Cell>{name}</Table.Cell>
         <Table.Cell>{user.username}</Table.Cell>
         <Table.Cell>lang</Table.Cell>
         <Table.Cell>
-          <Button>
-            Herausfordern
-          </Button>
+          <Popup
+            trigger={<Button content='Herausfordern' />}
+            content={
+              <div>
+                <Label attached='top' content='Deine KI' />
+                <Dropdown placeholder='Deine KI' search selection options={choices} />
+                <Divider hidden />
+                <Button color='teal' fluid content='Herausforderung starten' />
+              </div>
+            }
+            on='click'
+            position='left center'
+          />
         </Table.Cell>
       </Table.Row>
     )
@@ -40,7 +51,19 @@ export const ListEntry = Relay.createContainer(_ListEntry, {
         id,
         name,
         elo,
+        icon,
         user { username }
+      }
+    `,
+    me: () => Relay.QL`
+      fragment on User {
+        id,
+        username,
+        ais {
+          id,
+          name,
+          icon
+        }
       }
     `
   }
@@ -68,7 +91,7 @@ class _AisPage extends PureComponent {
           </Table.Header>
           <Table.Body>
             {this.props.aiStore.ais.map((data) =>
-              <ListEntry key={data.id} ai={data} />)}
+              <ListEntry key={data.id} ai={data} me={null} />)}
           </Table.Body>
         </Table>
       </App>

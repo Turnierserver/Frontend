@@ -5,6 +5,7 @@ import { TutorialPage } from './pages/Tutorial.js'
 import { UsersPageRoute, UsersPage } from './pages/Users.js'
 import { AisPageRoute, AisPage } from './pages/Ais.js'
 import { GamesPageRoute, GamesPage } from './pages/Games.js'
+import { LoginPageRoute, LoginPage } from './pages/Login.js'
 
 export class EmptyRoute extends Relay.Route {
   static routeName = 'EmptyRoute'
@@ -25,6 +26,13 @@ export const stateNavigator = new StateNavigator([
     defaults: {},
     component: TutorialPage,
     relayRoute: (data) => new EmptyRoute(data)
+  },
+  {
+    key: 'login',
+    route: 'login',
+    defaults: {},
+    component: LoginPage,
+    relayRoute: (data) => new LoginPageRoute(data)
   },
   {
     key: 'users',

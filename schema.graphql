@@ -3,6 +3,7 @@ type Ai {
   name: String!
   description: String
   elo: Float!
+  icon: String!
   user: User!
   gametype: GameType!
   games: [AiGameConnection!]!
@@ -49,6 +50,7 @@ type GameTypeStore {
 
 type Mutation {
   testMutate(newVal: Int!): Boolean!
+  authPw(username: String!, password: String!): String!
   __typename: String!
 }
 
@@ -57,7 +59,6 @@ type Query {
   aiStore: AiStore!
   gameStore: GameStore!
   gametypeStore: GameTypeStore!
-  me: User
   __typename: String!
   __schema: __Schema!
   __type(name: String!): __Type!
@@ -78,5 +79,6 @@ type User {
 
 type UserStore {
   users: [User!]!
+  me: User
   __typename: String!
 }
