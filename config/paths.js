@@ -18,7 +18,6 @@ function resolveApp(relativePath) {
 
 // We will export `nodePaths` as an array of absolute paths.
 // It will then be used by Webpack configs.
-// Jest doesn’t need this because it already handles `NODE_PATH` out of the box.
 
 // Note that unlike in Node, only *relative* paths from `NODE_PATH` are honored.
 // Otherwise, we risk importing Node.js core modules into an app instead of Webpack shims.
