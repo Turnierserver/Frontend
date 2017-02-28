@@ -3,8 +3,33 @@ import Relay from 'react-relay'
 import { Table, Button, Popup, Label, Divider, Dropdown, Image } from 'semantic-ui-react'
 
 import { App } from '../App.js'
+import { relayContainer } from '../decorators.js'
 
-class _ListEntry extends PureComponent {
+@relayContainer({
+  fragments: {
+    ai: () => Relay.QL`
+      fragment on Ai {
+        id,
+        name,
+        elo,
+        icon,
+        user { username }
+      }
+    `,
+    me: () => Relay.QL`
+      fragment on User {
+        id,
+        username,
+        ais {
+          id,
+          name,
+          icon
+        }
+      }
+    `
+  }
+})
+export class ListEntry extends PureComponent {
   static propTypes = {
     ai: PropTypes.object,
     me: PropTypes.object
@@ -44,39 +69,28 @@ class _ListEntry extends PureComponent {
   }
 }
 
-export const ListEntry = Relay.createContainer(_ListEntry, {
+@relayContainer({
   fragments: {
-    ai: () => Relay.QL`
-      fragment on Ai {
-        id,
-        name,
-        elo,
-        icon,
-        user { username }
-      }
-    `,
-    me: () => Relay.QL`
-      fragment on User {
-        id,
-        username,
+    aiStore: () => Relay.QL`
+      fragment on AiStore {
         ais {
-          id,
-          name,
-          icon
+          ${ListEntry.getFragment('ai')},
+          id
         }
       }
-    `
+    `,
+    userStore: { deriveFrom: App }
   }
 })
-
-class _AisPage extends PureComponent {
+export class AisPage extends PureComponent {
   static propTypes = {
-    aiStore: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+    aiStore: PropTypes.object,
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='ais'>
+      <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='ais'>
         <Table singleLine sortable>
           <Table.Header>
             <Table.Row>
@@ -99,25 +113,17 @@ class _AisPage extends PureComponent {
   }
 }
 
-export const AisPage = Relay.createContainer(_AisPage, {
-  fragments: {
-    aiStore: () => Relay.QL`
-      fragment on AiStore {
-        ais {
-          ${ListEntry.getFragment('ai')},
-          id
-        }
-      }
-    `
-  }
-})
-
 export class AisPageRoute extends Relay.Route {
   static routeName = 'AisPage'
   static queries = {
     aiStore: (Component) => Relay.QL`
-      query AisPageQuery {
+      query {
         aiStore { ${Component.getFragment('aiStore')} }
+      }
+    `,
+    userStore: (Component) => Relay.QL`
+      query {
+        userStore { ${Component.getFragment('userStore')} }
       }
     `
   }

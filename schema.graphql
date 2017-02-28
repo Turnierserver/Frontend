@@ -24,6 +24,11 @@ type AiStore {
   __typename: String!
 }
 
+input AuthCredentials {
+  username: String!
+  password: String!
+}
+
 type Game {
   id: ID!
   gametype: GameType!
@@ -50,7 +55,7 @@ type GameTypeStore {
 
 type Mutation {
   testMutate(newVal: Int!): Boolean!
-  authPw(username: String!, password: String!): String!
+  auth(input: AuthCredentials!): String!
   __typename: String!
 }
 
@@ -73,6 +78,7 @@ type User {
   admin: Boolean!
   secret: String!
   firstname: String
+  lastname: String
   ais: [Ai!]!
   __typename: String!
 }

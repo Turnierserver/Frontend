@@ -78,7 +78,7 @@ export class AppMenu extends PureComponent {
             <Modal.Header>Enter your Credentials</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <LoginForm me={null} />
+                <LoginForm me={this.props.me} />
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
