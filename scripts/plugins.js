@@ -1,13 +1,18 @@
 let relayPlugin = require('../config/plugins/relay')
 
-export function start () {
+function start () {
   return Promise.all([
     (relayPlugin.isEnabled()) ? relayPlugin.start() : false
   ])
 }
 
-export function build () {
+function build () {
   return Promise.all([
     (relayPlugin.isEnabled()) ? relayPlugin.build() : false
   ])
+}
+
+module.exports = {
+  build: build,
+  start: start
 }
