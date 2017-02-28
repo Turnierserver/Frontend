@@ -108,7 +108,8 @@ module.exports = {
           /\.(js|jsx)$/,
           /\.css$/,
           /\.json$/,
-          /\.svg$/
+          /\.svg$/,
+          /\.md$/
         ],
         loader: 'url-loader',
         options: {
@@ -173,6 +174,10 @@ module.exports = {
         options: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
+      },
+      {
+        test: /\.md$/,
+        loader: 'raw-loader'
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "url" loader exclusion list.
