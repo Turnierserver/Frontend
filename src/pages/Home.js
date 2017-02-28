@@ -1,16 +1,22 @@
-import React, { PureComponent } from 'react'
-import Relay from 'react-relay'
+import React, { PureComponent, PropTypes } from 'react'
 
 import { App } from '../App.js'
+import { relayContainer } from '../decorators.js'
 
-class _HomePage extends PureComponent {
+@relayContainer({
+  fragments: {
+    userStore: { deriveFrom: App }
+  }
+})
+export class HomePage extends PureComponent {
   static propTypes = {
-    ais: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+    ais: PropTypes.object,
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='home'>
+      <App page='home' stateNavigator={this.props.stateNavigator} userStore={this.props.userStore}>
         <button className="ui basic green button">Registrieren</button>
         <button className="ui basic green button">Passwort zurücksetzen</button>
         <a className="ui basic green button">Codr runterladen</a>
@@ -18,7 +24,3 @@ class _HomePage extends PureComponent {
     )
   }
 }
-
-export const HomePage = Relay.createContainer(_HomePage, {
-  fragments: {}
-})

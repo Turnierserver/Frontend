@@ -53,17 +53,19 @@ export class ListEntry extends PureComponent {
           id
         }
       }
-    `
+    `,
+    userStore: { deriveFrom: App }
   }
 })
 export class GamesPage extends PureComponent {
   static propTypes = {
     gameStore: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+    stateNavigator: React.PropTypes.object,
+    userStore: React.PropTypes.object
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='games'>
+      <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='games'>
         <Table singleLine sortable>
           <Table.Header>
             <Table.Row>
@@ -92,6 +94,13 @@ export class GamesPageRoute extends Relay.Route {
     gameStore: (Component) => Relay.QL`
       query GamesPageQuery {
         gameStore { ${Component.getFragment('gameStore')} }
+      }
+    `,
+    userStore: (Component) => Relay.QL`
+      query UsersPageQuery {
+        userStore {
+          ${Component.getFragment('userStore')}
+        }
       }
     `
   }

@@ -3,9 +3,20 @@ import Relay from 'react-relay'
 import { Table } from 'semantic-ui-react'
 
 import { App } from '../App.js'
+import { relayContainer } from '../decorators.js'
 
-// @graphql(ListEntryQuery) TODO: decorators
-class _ListEntry extends PureComponent {
+@relayContainer({
+  fragments: {
+    user: () => Relay.QL`
+      fragment on User {
+        username,
+        email,
+        admin
+      }
+    `
+  }
+})
+export class ListEntry extends PureComponent {
   static propTypes = {
     user: React.PropTypes.object
   }
@@ -21,26 +32,26 @@ class _ListEntry extends PureComponent {
   }
 }
 
-export const ListEntry = Relay.createContainer(_ListEntry, {
+@relayContainer({
   fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        username,
-        email,
-        admin
+    userStore: () => Relay.QL`
+      fragment on UserStore {
+        ${App.getFragment('userStore')}
+        users {
+          ${ListEntry.getFragment('user')}
+        }
       }
     `
   }
 })
-
-class _UsersPage extends PureComponent {
+export class UsersPage extends PureComponent {
   static propTypes = {
-    users: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+    stateNavigator: React.PropTypes.object,
+    userStore: React.PropTypes.object
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='users'>
+      <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='users'>
         <Table singleLine sortable>
           <Table.Header>
             <Table.Row>
@@ -50,7 +61,7 @@ class _UsersPage extends PureComponent {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.props.users.users.map((data, i) => <ListEntry key={i} user={data} />)}
+            {this.props.userStore.users.map((data, i) => <ListEntry key={i} user={data} />)}
           </Table.Body>
         </Table>
       </App>
@@ -58,24 +69,14 @@ class _UsersPage extends PureComponent {
   }
 }
 
-export const UsersPage = Relay.createContainer(_UsersPage, {
-  fragments: {
-    users: () => Relay.QL`
-      fragment on UserStore {
-        users {
-          ${ListEntry.getFragment('user')}
-        }
-      }
-    `
-  }
-})
-
 export class UsersPageRoute extends Relay.Route {
   static routeName = 'UsersPage'
   static queries = {
-    users: (Component) => Relay.QL`
+    userStore: (Component) => Relay.QL`
       query UsersPageQuery {
-        userStore { ${Component.getFragment('users')} }
+        userStore {
+          ${Component.getFragment('userStore')}
+        }
       }
     `
   }

@@ -1,8 +1,16 @@
 import React, { PureComponent, PropTypes } from 'react'
+import Relay from 'react-relay'
 import logo from './logo.svg'
 import { LoginForm } from './pages/Login.js'
 import { Menu, Icon, Dropdown, Modal, Button } from 'semantic-ui-react'
 
+import { relayContainer } from './decorators.js'
+
+@relayContainer({
+  fragments: {
+    me: () => Relay.QL`fragment on User { id }`
+  }
+})
 export class AppMenu extends PureComponent {
   static propTypes = {
     stateNavigator: PropTypes.object,

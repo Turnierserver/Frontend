@@ -9,7 +9,13 @@ import { LoginPageRoute, LoginPage } from './pages/Login.js'
 
 export class EmptyRoute extends Relay.Route {
   static routeName = 'EmptyRoute'
-  static queries = {}
+  static queries = {
+    userStore: (Component) => Relay.QL`
+      query {
+        userStore { ${Component.getFragment('userStore')} }
+      }
+    `
+  }
 }
 
 export const stateNavigator = new StateNavigator([
