@@ -1,20 +1,26 @@
 import React, { PureComponent } from 'react'
-import Relay from 'react-relay'
 import ReactMarkdown from 'react-markdown'
 import { Segment } from 'semantic-ui-react'
 
 import { App } from '../App.js'
+import { relayContainer } from '../decorators.js'
 
-const tutorialData = require('../../tutorial.md') // FIXME
+import tutorialData from '../../tutorial.md'
 
-class _TutorialPage extends PureComponent {
+@relayContainer({
+  fragments: {
+    userStore: { deriveFrom: App }
+  }
+})
+export class TutorialPage extends PureComponent {
   static propTypes = {
     ais: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+    stateNavigator: React.PropTypes.object,
+    userStore: React.PropTypes.object
   }
   render () {
     return (
-      <App stateNavigator={this.props.stateNavigator} page='tutorial'>
+      <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='tutorial'>
         <Segment>
           <ReactMarkdown source={tutorialData} />
         </Segment>
@@ -22,7 +28,3 @@ class _TutorialPage extends PureComponent {
     )
   }
 }
-
-export const TutorialPage = Relay.createContainer(_TutorialPage, {
-  fragments: {}
-})
