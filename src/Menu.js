@@ -15,7 +15,8 @@ export class AppMenu extends PureComponent {
   static propTypes = {
     stateNavigator: PropTypes.object,
     page: PropTypes.string,
-    me: PropTypes.object
+    me: PropTypes.object,
+    skeleton: PropTypes.bool
   }
 
   constructor (props) {
@@ -23,22 +24,28 @@ export class AppMenu extends PureComponent {
     this.state = {
       loginModalOpen: false
     }
+    this.closeLoginModal = this.closeLoginModal.bind(this)
+  }
+
+  closeLoginModal () {
+    this.setState({ loginModalOpen: false })
   }
 
   render () {
     let nav = this.props.stateNavigator
     let page = this.props.page
+    let skell = (func) => this.props.skeleton ? null : func
     let PageLink = ({ route, text }) =>
         <Menu.Item
           active={page === route} name={route}
-          onClick={() => { nav.navigate(route) }} >
+          onClick={skell(() => { nav.navigate(route) })} >
           {text}
         </Menu.Item>
     return (
       <Menu inverted className="page grid" size='large'>
         <Menu.Item
           active={page === 'home'}
-          onClick={() => { nav.navigate('home') }}
+          onClick={skell(() => { nav.navigate('home') })}
           name='logo'>
           <img src={logo} alt="BwInf Logo" />
         </Menu.Item>
@@ -69,20 +76,22 @@ export class AppMenu extends PureComponent {
               </Dropdown.Menu>
             </Dropdown>
           ) : (
-            <Menu.Item name='sign in' onClick={() => this.setState({ loginModalOpen: true })} active={page === 'login'}>
+            <Menu.Item
+              name='sign in' active={page === 'login'}
+              onClick={skell(() => this.setState({ loginModalOpen: true }))}>
               <Icon name='sign in' />
             </Menu.Item>
           )}
 
-          <Modal dimmer='blurring' open={this.state.loginModalOpen} onClose={() => this.setState({ loginModalOpen: false })}>
+          <Modal dimmer='blurring' open={this.state.loginModalOpen} onClose={this.closeLoginModal}>
             <Modal.Header>Enter your Credentials</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <LoginForm me={this.props.me} />
+                <LoginForm me={this.props.me} onSuccess={this.closeLoginModal} />
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-              <Button color='black' onClick={() => this.setState({ loginModalOpen: false })}>Back</Button>
+              <Button color='black' onClick={this.closeLoginModal}>Back</Button>
               <Button positive icon='checkmark' labelPosition='right' content="Sign in" onClick={() => {
                 console.log('test')
               }} />

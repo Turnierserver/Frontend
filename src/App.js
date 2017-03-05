@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import Relay from 'react-relay'
 import { Grid } from 'semantic-ui-react'
 import { AppMenu } from './Menu.js'
@@ -16,10 +16,10 @@ import { relayContainer } from './decorators.js'
 })
 export class App extends PureComponent {
   static propTypes = {
-    children: React.PropTypes.any,
-    stateNavigator: React.PropTypes.object,
-    page: React.PropTypes.string,
-    userStore: React.PropTypes.object
+    children: PropTypes.any,
+    stateNavigator: PropTypes.object,
+    page: PropTypes.string,
+    userStore: PropTypes.object
   }
   render () {
     return (
@@ -39,3 +39,21 @@ export class App extends PureComponent {
   }
 }
 
+export class AppSkeleton extends PureComponent {
+  static propTypes = { children: PropTypes.any }
+  render () {
+    return (
+      <div>
+        <AppMenu skeleton
+          stateNavigator={null} page={null} me={null} />
+        <Grid className="page">
+          <Grid.Row>
+            <Grid.Column>
+              {this.props.children}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    )
+  }
+}
