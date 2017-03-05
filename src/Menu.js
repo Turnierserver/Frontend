@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import Relay from 'react-relay'
 import logo from './logo.svg'
-import { LoginForm } from './pages/Login.js'
+import { LoginForm, logOut } from './Auth.js'
 import { Menu, Icon, Dropdown, Modal, Button } from 'semantic-ui-react'
 
 import { relayContainer } from './decorators.js'
@@ -72,7 +72,7 @@ export class AppMenu extends PureComponent {
                 <Dropdown.Divider />
                 <Dropdown.Header>Account</Dropdown.Header>
                 <Dropdown.Item>Settings</Dropdown.Item>
-                <Dropdown.Item>Log out</Dropdown.Item>
+                <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           ) : (
@@ -87,13 +87,13 @@ export class AppMenu extends PureComponent {
             <Modal.Header>Enter your Credentials</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <LoginForm me={this.props.me} onSuccess={this.closeLoginModal} />
+                <LoginForm me={this.props.me} onSuccess={this.closeLoginModal} ref="loginForm" />
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
               <Button color='black' onClick={this.closeLoginModal}>Back</Button>
               <Button positive icon='checkmark' labelPosition='right' content="Sign in" onClick={() => {
-                console.log('test')
+                this.refs.loginForm.handleLogin()
               }} />
             </Modal.Actions>
           </Modal>
