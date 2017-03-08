@@ -3,6 +3,7 @@ import { StateNavigator } from 'navigation'
 import { HomePage } from './pages/Home.js'
 import { TutorialPage } from './pages/Tutorial.js'
 import { UsersPageRoute, UsersPage } from './pages/Users.js'
+import { UserPageRoute, UserPage } from './pages/User.js'
 import { AisPageRoute, AisPage } from './pages/Ais.js'
 import { GamesPageRoute, GamesPage } from './pages/Games.js'
 import { LoginPageRoute, LoginPage } from './pages/Login.js'
@@ -48,9 +49,14 @@ export const stateNavigator = new StateNavigator([
     relayRoute: (data) => new UsersPageRoute(data)
   },
   {
+    key: 'user',
+    route: 'user/{userID}',
+    component: UserPage,
+    relayRoute: (data) => new UserPageRoute(data)
+  },
+  {
     key: 'ais',
     route: 'ais',
-    defaults: { id: 0 },
     trackCrumbTrail: true,
     component: AisPage,
     relayRoute: (data) => new AisPageRoute(data)

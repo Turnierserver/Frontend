@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Relay from 'react-relay'
 import 'semantic-ui-css/semantic.css'
-import { Loader, Dimmer } from 'semantic-ui-react'
+import { Message, Button, Header, Icon, Segment } from 'semantic-ui-react'
 
 import { AppSkeleton } from './App.js'
 import { stateNavigator } from './routes.js'
@@ -25,15 +25,21 @@ stateNavigator.onNavigate((oldState, state, data) => {
       }
       renderLoading={() =>
         <AppSkeleton>
-          <Dimmer active>
-            <Loader>fetching data...</Loader>
-          </Dimmer>
+          <center><pre>fetching data...</pre></center>
         </AppSkeleton>
       }
       renderFailure={(error, retry) =>
         <AppSkeleton>
-          <p>{error.message}</p>
-          <p><button onClick={retry}>Retry?</button></p>
+          <Message warning>
+            <Header as='h2' icon>
+              <Icon name="warning sign" />
+              {error.message}
+            </Header>
+            <Segment attached>
+              <pre>{error.stack}</pre>
+            </Segment>
+            <Button content="Retry?" attached="bottom" onClick={retry}/>
+          </Message>
         </AppSkeleton>
       }
       Component={Component}

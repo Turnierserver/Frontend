@@ -3,6 +3,7 @@ type Ai {
   name: String!
   description: String
   elo: Float!
+  rank: Int!
   icon: String!
   user: User!
   gametype: GameType!
@@ -83,7 +84,7 @@ type User {
   username: String!
   email: String!
   admin: Boolean!
-  secret: String!
+  canEdit: Boolean!
   firstname: String
   lastname: String
   ais: [Ai!]!
@@ -92,6 +93,7 @@ type User {
 
 type UserStore {
   users: [User!]!
+  user(id: ID!): User!
   me: User
   __typename: String!
 }

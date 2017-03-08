@@ -61,6 +61,7 @@ function refreshUser (me) {
 }
 
 export function logOut () {
+  // TODO: update authenticated user
   document.cookie = ''
   let query = Relay.createQuery(Relay.QL`
     query {
