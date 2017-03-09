@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 
 import { App } from '../App.js'
 import { relayContainer } from '../decorators.js'
+import { Button, Icon } from 'semantic-ui-react'
 
 @relayContainer({
   fragments: {
@@ -17,9 +18,18 @@ export class HomePage extends PureComponent {
   render () {
     return (
       <App page='home' stateNavigator={this.props.stateNavigator} userStore={this.props.userStore}>
-        <button className="ui basic green button">Registrieren</button>
-        <button className="ui basic green button">Passwort zurücksetzen</button>
-        <a className="ui basic green button">Codr runterladen</a>
+        <center style={{height: '100%'}}>
+          <Icon.Group size='huge'>
+            <Icon loading size='big' name='sun' />
+            <Icon name='lab' />
+          </Icon.Group>
+          <br />
+          <div style={{padding: '3em'}}>
+            <Button color='green' basic>Registrieren</Button>
+            <Button color='green' basic>Passwort zurücksetzen</Button>
+            <Button color='green' basic>Codr runterladen</Button>
+          </div>
+        </center>
       </App>
     )
   }

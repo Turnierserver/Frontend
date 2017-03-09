@@ -79,7 +79,7 @@ Die Datei kann hierbei einen beliebigen Namen und Pfad haben. Bei Ordnern sollte
 
 **C(++)**
 
-Bei einer C(++)-KI ist enthält diese Datei eine optionale Zeile, mit der man angeben kann, ob die KI mit Debugging-Symbolane (`-g`)
+Bei einer C(++)-KI ist enthält diese Datei eine optionale Zeile, mit der man angeben kann, ob die KI mit Debugging-Symbolen (`-g`)
 oder optimiert (`-O2`) gebaut wird. Allerdings gibt es aktuell keine Möglichkeit die KI zu debuggen.
 
 **Go:**
