@@ -3,39 +3,42 @@ import Relay from 'react-relay'
 import { Table, Button, Popup, Label, Divider, Dropdown, Image } from 'semantic-ui-react'
 
 import { App } from '../App.js'
+import { DataTable } from '../Components/DataTable.js'
 import { relayContainer } from '../decorators.js'
 
 @relayContainer({
   fragments: {
-    ai: () => Relay.QL`
-      fragment on Ai {
-        id,
-        name,
-        elo,
-        icon,
-        user { username }
-      }
-    `,
-    me: () => Relay.QL`
-      fragment on User {
-        id,
-        username,
+    aiStore: () => Relay.QL`
+      fragment on AiStore {
         ais {
           id,
+          icon,
+          rank,
+          elo,
           name,
-          icon
+          user { id, username },
+          gametype { id, name }
         }
       }
     `
   }
 })
-export class ListEntry extends PureComponent {
-  static propTypes = {
-    ai: PropTypes.object,
-    me: PropTypes.object
+class AIsTable extends DataTable {
+  getColumns () {
+    return [
+      { text: 'Icon' },
+      { text: 'Platz', sortable: 'ascending' },
+      { text: 'ELO', sortable: 'descending' },
+      { text: 'Name', sortable: true },
+      { text: 'User', sortable: true },
+      { text: 'Spieltyp', sortable: true },
+      { text: 'Sprache', sortable: true },
+      { text: 'Herausfordern', sortable: true }
+    ]
   }
-  render () {
-    let { id, elo, name, user, icon } = this.props.ai
+  renderElement (ai) {
+    let { id, rank, elo, name, user, icon, lang, gametype } = ai
+    let currentGametype = null // TODO
     let choices = [
       { key: 'A', value: 'A', text: 'Meine KI', image: { avatar: true, src: '' } } // TODO
     ]
@@ -44,11 +47,12 @@ export class ListEntry extends PureComponent {
         <Table.Cell>
           <Image src={icon} avatar />
         </Table.Cell>
-        <Table.Cell>rank</Table.Cell>
-        <Table.Cell>{elo}</Table.Cell>
+        <Table.Cell textAlign='right'>{rank}</Table.Cell>
+        <Table.Cell textAlign='right'>{elo}</Table.Cell>
         <Table.Cell>{name}</Table.Cell>
         <Table.Cell>{user.username}</Table.Cell>
-        <Table.Cell>lang</Table.Cell>
+        <Table.Cell>{currentGametype === gametype.id ? <b>{gametype.name}</b> : gametype.name}</Table.Cell>
+        <Table.Cell>{lang ? lang.name : 'FIXME'}</Table.Cell>
         <Table.Cell>
           <Popup
             trigger={<Button content='Herausfordern' />}
@@ -67,18 +71,15 @@ export class ListEntry extends PureComponent {
       </Table.Row>
     )
   }
+
+  render () {
+    return this.table(this.getColumns(), this.props.aiStore.ais, this.renderElement)
+  }
 }
 
 @relayContainer({
   fragments: {
-    aiStore: () => Relay.QL`
-      fragment on AiStore {
-        ais {
-          ${ListEntry.getFragment('ai')},
-          id
-        }
-      }
-    `,
+    aiStore: { deriveFrom: AIsTable },
     userStore: { deriveFrom: App }
   }
 })
@@ -91,23 +92,7 @@ export class AisPage extends PureComponent {
   render () {
     return (
       <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='ais'>
-        <Table singleLine sortable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Icon</Table.HeaderCell>
-              <Table.HeaderCell>Rank</Table.HeaderCell>
-              <Table.HeaderCell>ELO</Table.HeaderCell>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>User</Table.HeaderCell>
-              <Table.HeaderCell>Lang</Table.HeaderCell>
-              <Table.HeaderCell>Herausfordern</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {this.props.aiStore.ais.map((data) =>
-              <ListEntry key={data.id} ai={data} me={null} />)}
-          </Table.Body>
-        </Table>
+        <AIsTable aiStore={this.props.aiStore} />
       </App>
     )
   }
