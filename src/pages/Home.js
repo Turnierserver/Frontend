@@ -21,7 +21,7 @@ export class HomePage extends PureComponent {
       <App page='home' stateNavigator={this.props.stateNavigator} userStore={this.props.userStore}>
         <center style={{height: '100%'}}>
           <Icon.Group size='huge'>
-            <Icon loading size='big' name='sun' />
+            <Icon size='big' name='sun' />
             <Icon name='lab' />
           </Icon.Group>
           <br />

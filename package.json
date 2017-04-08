@@ -57,6 +57,7 @@
   "dependencies": {
     "navigation": "^4.0.0",
     "navigation-react": "^2.0.3",
+    "prop-types": "^15.5.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-markdown": "^2.4.4",
