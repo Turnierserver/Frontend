@@ -4,41 +4,50 @@ import { Table } from 'semantic-ui-react'
 import { NavigationLink } from 'navigation-react'
 
 import { App } from '../App.js'
+import { DataTable } from '../Components/DataTable.js'
 import { relayContainer } from '../decorators.js'
 
 @relayContainer({
   fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        id,
-        username,
-        email,
-        admin
+    userStore: () => Relay.QL`
+      fragment on UserStore {
+        users {
+          id,
+          username,
+          email,
+          admin
+        }
       }
     `
   }
 })
-export class ListEntry extends PureComponent {
-  static propTypes = {
-    user: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object
+class UsersTable extends DataTable {
+  getColumns () {
+    return [
+      { text: 'Username', sortable: true, id: 'username' },
+      { text: 'E-Mail', sortable: true, id: '' },
+      { text: 'Admin', sortable: true }
+    ]
   }
-  render () {
-    let { id, username, email, admin } = this.props.user
+  renderElement (user) {
+    let { id, username, admin, email } = user
     return (
-      <Table.Row key={username}>
+      <Table.Row key={id}>
         <Table.Cell>
           <NavigationLink
             stateKey="user"
             navigationData={{userID: id}}
             stateNavigator={this.props.stateNavigator}>
             {username}
-          </NavigationLink>
-        </Table.Cell>
+          </NavigationLink></Table.Cell>
         <Table.Cell>{email}</Table.Cell>
         <Table.Cell>{admin ? 'Yes' : 'No'}</Table.Cell>
       </Table.Row>
     )
+  }
+
+  render () {
+    return this.table(this.getColumns(), this.props.userStore.users, this.renderElement)
   }
 }
 
@@ -47,9 +56,7 @@ export class ListEntry extends PureComponent {
     userStore: () => Relay.QL`
       fragment on UserStore {
         ${App.getFragment('userStore')}
-        users {
-          ${ListEntry.getFragment('user')}
-        }
+        ${UsersTable.getFragment('userStore')}
       }
     `
   }
@@ -62,6 +69,7 @@ export class UsersPage extends PureComponent {
   render () {
     return (
       <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='users'>
+<<<<<<< HEAD
         <Table singleLine sortable>
           <Table.Header>
             <Table.Row>
@@ -76,6 +84,9 @@ export class UsersPage extends PureComponent {
             )}
           </Table.Body>
         </Table>
+=======
+        <UsersTable userStore={this.props.userStore} />
+>>>>>>> 1adb39d3455f59e706fca3a25871bda8964e0b0e
       </App>
     )
   }

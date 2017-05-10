@@ -19,6 +19,13 @@ export function relayContainer (options) {
             }
           `
           break
+        case 'AiStore':
+          options.fragments[key] = () => Relay.QL`
+            fragment on AiStore {
+              ${component.getFragment(key)}
+            }
+          `
+          break
         default:
           console.log(`type ${type} is missing :'(`)
           options.fragments[key] = () => Relay.QL()
