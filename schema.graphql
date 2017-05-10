@@ -38,6 +38,21 @@ type AuthOutput {
   __typename: String!
 }
 
+input EditUserInput {
+  clientMutationId: String!
+  userId: ID!
+  email: String
+  lastname: String
+  firstname: String
+  namePublic: Boolean
+}
+
+type EditUserOutput {
+  clientMutationId: String!
+  user: User!
+  __typename: String!
+}
+
 type Game {
   id: ID!
   gametype: GameType!
@@ -64,6 +79,8 @@ type GameTypeStore {
 
 type Mutation {
   auth(input: AuthCredentials!): AuthOutput!
+  register(input: RegisterInput!): EditUserOutput!
+  editUser(input: EditUserInput!): EditUserOutput!
   __typename: String!
 }
 
@@ -75,6 +92,13 @@ type Query {
   __typename: String!
   __schema: __Schema!
   __type(name: String!): __Type!
+}
+
+input RegisterInput {
+  clientMutationId: String!
+  username: String!
+  password: String!
+  email: String!
 }
 
 # Ein Turnierserver-Nutzer
