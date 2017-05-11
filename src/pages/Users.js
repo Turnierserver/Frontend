@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Relay from 'react-relay'
 import { Table } from 'semantic-ui-react'
 import { NavigationLink } from 'navigation-react'
@@ -22,6 +23,7 @@ import { relayContainer } from '../decorators.js'
   }
 })
 class UsersTable extends DataTable {
+  static propTypes = { stateNavigator: PropTypes.object }
   getColumns () {
     return [
       { text: 'Username', sortable: true, id: 'username' },
@@ -63,30 +65,13 @@ class UsersTable extends DataTable {
 })
 export class UsersPage extends PureComponent {
   static propTypes = {
-    stateNavigator: React.PropTypes.object,
-    userStore: React.PropTypes.object
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
   render () {
     return (
       <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='users'>
-<<<<<<< HEAD
-        <Table singleLine sortable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Username</Table.HeaderCell>
-              <Table.HeaderCell>E-Mail</Table.HeaderCell>
-              <Table.HeaderCell>Admin</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {this.props.userStore.users.map((data, i) =>
-              <ListEntry key={i} user={data} stateNavigator={this.props.stateNavigator} />
-            )}
-          </Table.Body>
-        </Table>
-=======
-        <UsersTable userStore={this.props.userStore} />
->>>>>>> 1adb39d3455f59e706fca3a25871bda8964e0b0e
+        <UsersTable userStore={this.props.userStore} stateNavigator={this.props.stateNavigator} />
       </App>
     )
   }

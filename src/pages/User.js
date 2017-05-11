@@ -1,6 +1,6 @@
 import { Segment, Label, Divider, Header, Table, Image } from 'semantic-ui-react'
-
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Relay from 'react-relay'
 
 import { App } from '../App.js'
@@ -73,8 +73,8 @@ class AIsTable extends DataTable {
 })
 export class UserPage extends PureComponent {
   static propTypes = {
-    stateNavigator: React.PropTypes.object,
-    userStore: React.PropTypes.object
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
 
   render () {

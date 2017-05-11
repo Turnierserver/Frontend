@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Relay from 'react-relay'
 import { Table, Button } from 'semantic-ui-react'
 
@@ -59,9 +60,9 @@ export class ListEntry extends PureComponent {
 })
 export class GamesPage extends PureComponent {
   static propTypes = {
-    gameStore: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object,
-    userStore: React.PropTypes.object
+    gameStore: PropTypes.object,
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
   render () {
     return (

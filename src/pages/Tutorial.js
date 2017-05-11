@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
 import { Segment } from 'semantic-ui-react'
 
@@ -14,9 +15,9 @@ import tutorialData from '../../tutorial.md'
 })
 export class TutorialPage extends PureComponent {
   static propTypes = {
-    ais: React.PropTypes.object,
-    stateNavigator: React.PropTypes.object,
-    userStore: React.PropTypes.object
+    ais: PropTypes.object,
+    stateNavigator: PropTypes.object,
+    userStore: PropTypes.object
   }
   render () {
     return (

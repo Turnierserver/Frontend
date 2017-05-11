@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Relay from 'react-relay'
 import logo from './logo.svg'
 import { LoginForm, logOut } from './Auth.js'
@@ -87,13 +88,13 @@ export class AppMenu extends PureComponent {
             <Modal.Header>Enter your Credentials</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <LoginForm me={this.props.me} onSuccess={this.closeLoginModal} ref="loginForm" />
+                <LoginForm me={this.props.me} onSuccess={this.closeLoginModal} ref={(e) => { this.loginForm = e }} />
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
               <Button color='black' onClick={this.closeLoginModal}>Back</Button>
               <Button positive icon='checkmark' labelPosition='right' content="Sign in" onClick={() => {
-                this.refs.loginForm.handleLogin()
+                this.loginForm.handleLogin()
               }} />
             </Modal.Actions>
           </Modal>

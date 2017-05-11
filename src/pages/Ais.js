@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Relay from 'react-relay'
 import { Table, Button, Popup, Label, Divider, Dropdown, Image } from 'semantic-ui-react'
 
