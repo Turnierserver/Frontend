@@ -9,6 +9,7 @@ export class DataTable extends Component {
         _current: null
       }
     }
+    this.table = this.table.bind(this)
   }
 
   handleSort (key, event) {
@@ -42,7 +43,7 @@ export class DataTable extends Component {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.map(renderData)}
+          {data.map(renderData.bind(this))}
         </Table.Body>
       </Table>
     )
