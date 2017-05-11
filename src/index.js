@@ -38,7 +38,10 @@ stateNavigator.onNavigate((oldState, state, data) => {
             <Segment attached>
               <pre>{error.stack}</pre>
             </Segment>
-            <Button content="Retry?" attached="bottom" onClick={retry}/>
+            <Button.Group attached='bottom'>
+              <Button content="Retry" onClick={retry}/>
+              <Button content="Return home" onClick={() => stateNavigator.navigate('home')}/>
+            </Button.Group>
           </Message>
         </AppSkeleton>
       }

@@ -9,16 +9,15 @@ import { DataTable } from '../Components/DataTable.js'
 
 @relayContainer({
   fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        ais {
-          id,
-          icon,
-          rank,
-          elo,
-          name,
-          gametype { id, name }
-        }
+    ais: () => Relay.QL`
+      fragment on Ai @relay(plural: true) {
+        id,
+        icon,
+        rank,
+        elo,
+        name,
+        gametype { id, name }
+        # TODO lang { id, name }
       }
     `
   }
@@ -46,7 +45,7 @@ class AIsTable extends DataTable {
         <Table.Cell textAlign='right'>{elo}</Table.Cell>
         <Table.Cell>{name}</Table.Cell>
         <Table.Cell>{currentGametype === gametype.id ? <b>{gametype.name}</b> : gametype.name}</Table.Cell>
-        <Table.Cell>{lang.name}</Table.Cell>
+        {lang ? <Table.Cell>{lang.name}</Table.Cell> : null}
       </Table.Row>
     )
   }
@@ -57,17 +56,18 @@ class AIsTable extends DataTable {
 }
 
 @relayContainer({
+  initialVariables: { userID: null },
   fragments: {
-    userStore: ({ userID }) => Relay.QL`
+    userStore: () => Relay.QL`
       fragment on UserStore {
         ${App.getFragment('userStore')}
         user(id: $userID) {
-          ${UserPage.getFragment('user')}
+          username,
+          firstname, lastname,
+          canEdit
+          ais { ${AIsTable.getFragment('ais')} }
         }
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User { ${AIsTable.getFragment('user')} }
     `
   }
 })
@@ -79,6 +79,16 @@ export class UserPage extends PureComponent {
 
   render () {
     let { username, firstname, lastname, ais, canEdit } = this.props.userStore.user
+    if (username === undefined) {
+      return (
+        <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='users'>
+          <Segment>
+            <h2>Unknown user</h2>
+            <pre>{JSON.stringify(this.props.userStore, null, 2)}</pre>
+          </Segment>
+        </App>
+      )
+    }
     return (
       <App stateNavigator={this.props.stateNavigator} userStore={this.props.userStore} page='users'>
         <Segment>
@@ -106,10 +116,10 @@ export class UserPageRoute extends Relay.Route {
     userID: {required: true}
   }
   static queries = {
-    userStore: (Component) => Relay.QL`
+    userStore: (Component, vars) => Relay.QL`
       query {
         userStore {
-          ${Component.getFragment('userStore')}
+          ${Component.getFragment('userStore', vars)}
         }
       }
     `
