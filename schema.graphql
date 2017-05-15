@@ -56,6 +56,7 @@ type EditUserOutput {
 type Game {
   id: ID!
   gametype: GameType!
+  timestamp: String!
   ais: [AiGameConnection!]!
   __typename: String!
 }
